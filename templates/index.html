@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Multimodal Health Analyzer</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        /* Overall styling */
+        body {
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        /* Button Container with Box */
+        .button-box {
+            margin-top: 60px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Horizontal button alignment */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Custom button styling */
+        .btn-custom {
+            font-size: 1.2rem;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #6dd5ed, #2193b0);
+            border: none;
+            border-radius: 50px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 200px;
+            /* Set a fixed width */
+        }
+
+        .btn-custom i {
+            font-size: 1.5rem;
+        }
+
+        .btn-custom:hover {
+            background: linear-gradient(135deg, #2193b0, #6dd5ed);
+            color: white;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Common section styling */
+        .info-section {
+            padding: 50px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            margin-top: 40px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .info-section h2 {
+            font-size: 2rem;
+            color: #0056b3;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .info-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* About Us section styling */
+        .about-section {
+            padding: 50px;
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-top: 40px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-section .team-member {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .about-section .team-member img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-right: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .about-section .team-member h3 {
+            font-size: 1.5rem;
+            color: #0056b3;
+            margin-bottom: 10px;
+        }
+
+        .about-section .team-member p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column;
+            }
+
+            .about-section .team-member {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .about-section .team-member img {
+                margin-bottom: 20px;
+                margin-right: 0;
+            }
+        }
+
+        /* Footer (optional) */
+        footer {
+            background-color: #0056b3;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Multimodal Health Analyzer</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#project-info">Project Info</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#research-papers">Research Papers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about-us">About Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Button Section with Box -->
+    <div class="container button-box">
+        <div class="button-container">
+            <a href="{{ url_for('text') }}" class="text-decoration-none">
+                <button class="btn btn-custom" type="button">
+                    <i class="bi bi-fonts"></i> Text Input
+                </button>
+            </a>
+            <a href="{{ url_for('image') }}" class="text-decoration-none">
+                <button class="btn btn-custom" type="button">
+                    <i class="bi bi-image"></i> Image Input
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Project Info Section -->
+    <div id="project-info" class="info-section">
+        <h2>Project Information</h2>
+        <p>
+            In this project, we developed a Multimodal health analyzer with a primary focus on analyzing X-ray images
+            and providing disease predictions based on both visual data and manually input symptoms.
+            The project utilized machine learning algorithms to train the system on X-ray datasets, enabling accurate
+            detection of specific diseases.
+            Additionally, a user-friendly interface was developed using Flask for easy interaction. As we move into the
+            next phase of the project, MRI and CT scan analysis will be integrated, further enhancing the system’s
+            diagnostic capabilities.
+        </p>
+    </div>
+
+    <!-- Research Papers Section -->
+    <div id="research-papers" class="info-section">
+        <h2>Research Papers</h2>
+        <p>
+            Our system is built upon extensive research in the fields of medical image analysis, machine learning, and
+            multimodal health diagnostics. The following papers have been referenced and contributed to our project:
+        </p>
+        <p>
+            1. <strong>Medical Imaging with Deep Learning:</strong> A comprehensive review of X-ray analysis techniques
+            and disease prediction models.<br>
+            2. <strong>Multimodal Disease Diagnosis:</strong> Combining manual symptom input with image-based
+            diagnostics for enhanced accuracy.<br>
+            3. <strong>Machine Learning in Healthcare:</strong> A guide to applying machine learning techniques for
+            predictive health analysis.<br>
+            4. <strong>Advanced Medical Imaging:</strong> Exploration of MRI and CT scan integration into diagnostic
+            tools.
+        </p>
+    </div>
+
+    <!-- About Us Section -->
+    <div id="about-us" class="about-section">
+        <h2 class="about-section">About Us</h2>
+
+        <!-- Team Member 1 -->
+        <div class="team-member">
+            <img src="https://via.placeholder.com/150" alt="Yash Mehta">
+            <div>
+                <h3>Yash Mehta</h3>
+                <p>
+                    Yash Mehta is a skilled software developer with a focus on machine learning and data science. He has
+                    played a critical role in developing the backend of the health analyzer and integrating AI models
+                    for X-ray image analysis.
+                </p>
+            </div>
+        </div>
+
+        <!-- Team Member 2 -->
+        <div class="team-member">
+            <img src="https://via.placeholder.com/150" alt="Yash Khandelwal">
+            <div>
+                <h3>Yash Khandelwal</h3>
+                <p>
+                    Yash Khandelwal specializes in frontend development and user interface design. His work ensures the
+                    project has a clean, intuitive interface for users to interact with the multimodal health analyzer.
+                </p>
+            </div>
+        </div>
+
+        <!-- Team Member 3 -->
+        <div class="team-member">
+            <img src="https://via.placeholder.com/150" alt="Deval Kaku">
+            <div>
+                <h3>Deval Kaku</h3>
+                <p>
+                    Deval Kaku is a data scientist with expertise in medical data analysis. He contributed to training
+                    the AI models and fine-tuning their accuracy in predicting diseases from medical images.
+                </p>
+            </div>
+        </div>
+
+        <!-- Team Member 4 -->
+        <div class="team-member">
+            <img src="https://via.placeholder.com/150" alt="Bhavin Jain">
+            <div>
+                <h3>Bhavin Jain</h3>
+                <p>
+                    Bhavin Jain focuses on system architecture and cloud infrastructure. He played a key role in
+                    ensuring the scalability and reliability of the health analyzer by designing its server-side
+                    architecture.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional Footer -->
+    <footer>
+        <p>&copy; 2024 Multimodal Health Analyzer. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

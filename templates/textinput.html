@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Custom Multi-Select List with Search</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Include Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <style>
+      /* Custom Styles */
+      body {
+        background: linear-gradient(to right, #e0eafc, #cfdef3);
+        font-family: 'Arial', sans-serif;
+        padding: 20px;
+      }
+
+      .custom-box {
+        border: 1px solid #ced4da;
+        border-radius: 0.375rem;
+        padding: 1.5rem; /* Increased padding for spaciousness */
+        background-color: #ffffff;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        width: 100%; /* Full width */
+        max-width: 600px; /* Set a max width for larger screens */
+      }
+
+      h5 {
+        color: #333;
+        margin-bottom: 1rem;
+      }
+
+      input[type="file"] {
+        padding: 10px;
+        margin-top: 20px;
+        border: 2px dashed #007BFF;
+        border-radius: 0.375rem;
+        width: 100%;
+        cursor: pointer;
+        transition: border-color 0.3s;
+      }
+
+      .badge {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .badge:hover {
+        transform: scale(1.05);
+      }
+
+      .select2-container .select2-selection--multiple {
+        border: 1px solid #ced4da;  /* Bootstrap default border */
+        border-radius: 0.375rem;  /* Bootstrap rounded borders */
+        padding: 0.5rem;  /* Add padding inside the dropdown */
+        min-height: 45px;  /* Make the dropdown a bit taller */
+      }
+
+      .select2-dropdown {
+        border-radius: 0.375rem; /* Match Bootstrap rounded corners */
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+      }
+
+      /* Custom button styling */
+      .analyze-button {
+        margin-top: 1rem;  /* Added margin for better spacing */
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+        border: none;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s, transform 0.3s;
+      }
+
+      .analyze-button:hover {
+        background-color: #218838;
+        transform: translateY(-2px);
+      }
+
+      /* Centering the container */
+      .centered-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full viewport height */
+      }
+    </style>
+</head>
+<body>
+
+<div class="container centered-container">
+    <div class="custom-box">
+        <h5>Select your options:</h5>
+
+        <!-- Multi-select with search and scroll functionality -->
+        <select id="multiSelect" class="form-select" multiple="multiple">
+            <option value="Option 1">Option 1</option>
+            <option value="Option 2">Option 2</option>
+            <option value="Option 3">Option 3</option>
+            <option value="Option 4">Option 4</option>
+            <option value="Option 5">Option 5</option>
+            <option value="Option 6">Option 6</option>
+        </select>
+
+        <!-- Selected items will appear here as badges -->
+        <div class="mt-2" id="selectedItems">
+            <h6>Selected Items:</h6>
+            <div id="badges" class="d-flex flex-wrap gap-1"></div>
+        </div>
+        
+        <!-- Analyze Button -->
+        <button class="analyze-button btn-sm">Analyze</button>
+    </div>
+</div>
+
+<!-- Include jQuery and Select2 JS -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+  // Initialize Select2 on the multi-select element
+  $('#multiSelect').select2({
+    placeholder: "Select options",
+    width: '100%',  // Make sure it uses the full width of the container
+    allowClear: true,
+    dropdownAutoWidth: true,
+    closeOnSelect: false  // Keeps the dropdown open after selecting an item
+  });
+
+  // Track the container for badges
+  const badgesContainer = document.getElementById('badges');
+
+  // Function to add a badge
+  function addBadge(value) {
+    const badge = document.createElement('span');
+    badge.className = 'badge bg-primary';
+    badge.id = `badge-${value}`;
+    badge.innerHTML = `${value} <span class="remove-badge">&times;</span>`;
+
+    // Event listener to remove the badge and deselect the item
+    badge.querySelector('.remove-badge').addEventListener('click', function() {
+      // Remove badge
+      badge.remove();
+      // Unselect the item in Select2
+      const select = $('#multiSelect');
+      const selectedOptions = select.val().filter(item => item !== value);
+      select.val(selectedOptions).trigger('change');
+    });
+
+    badgesContainer.appendChild(badge);
+  }
+
+  // Handle change event on the select box
+  $('#multiSelect').on('change', function() {
+    badgesContainer.innerHTML = ''; // Clear all existing badges
+    const selectedOptions = $(this).val(); // Get selected options
+
+    if (selectedOptions) {
+      selectedOptions.forEach(option => {
+        addBadge(option); // Add badges for each selected option
+      });
+    }
+  });
+
+  // Close Select2 dropdown on outside click
+  $(document).on('click', function(e) {
+    if (!$(e.target).closest('.select2-container').length) {
+      $('#multiSelect').select2('close');  // Close the dropdown when clicking outside
+    }
+  });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
