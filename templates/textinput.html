@@ -96,17 +96,38 @@
 
 <div class="container centered-container">
     <div class="custom-box">
-        <h5>Select your options:</h5>
+        <h5>Select your Symptoms:</h5>
 
         <!-- Multi-select with search and scroll functionality -->
         <select id="multiSelect" class="form-select" multiple="multiple">
-            <option value="Option 1">Option 1</option>
-            <option value="Option 2">Option 2</option>
-            <option value="Option 3">Option 3</option>
-            <option value="Option 4">Option 4</option>
-            <option value="Option 5">Option 5</option>
-            <option value="Option 6">Option 6</option>
-        </select>
+          <option value="Option 1">Abdominal Pain</option>
+          <option value="Option 2">Chest Pain (Angina)</option>
+          <option value="Option 3">Changes in Bowel or Bladder Habits</option>
+          <option value="Option 4">Cough</option>
+          <option value="Option 5">Difficulty Swallowing</option>
+          <option value="Option 6">Dizziness or Lightheadedness</option>
+          <option value="Option 7">Fatigue</option>
+          <option value="Option 8">Fever</option>
+          <option value="Option 9">Headache</option>
+          <option value="Option 10">Irregular Heartbeat (Palpitations)</option>
+          <option value="Option 11">Joint Pain</option>
+          <option value="Option 12">Loss of Appetite</option>
+          <option value="Option 13">Lumps or Swelling</option>
+          <option value="Option 14">Muscle Aches (Myalgia)</option>
+          <option value="Option 15">Nausea/Vomiting</option>
+          <option value="Option 16">Pain in Other Areas (Referred Pain)</option>
+          <option value="Option 17">Persistent Cough or Hoarseness</option>
+          <option value="Option 18">Persistent Fever or Night Sweats</option>
+          <option value="Option 19">Persistent Pain</option>
+          <option value="Option 20">Shortness of Breath</option>
+          <option value="Option 21">Skin Changes</option>
+          <option value="Option 22">Sore Throat</option>
+          <option value="Option 23">Swelling (Edema)</option>
+          <option value="Option 24">Unexplained Weight Loss</option>
+          <option value="Option 25">Unusual Bleeding or Discharge</option>
+          <option value="Option 26">Diarrhea</option>
+      </select>
+      
 
         <!-- Selected items will appear here as badges -->
         <div class="mt-2" id="selectedItems">
@@ -124,56 +145,58 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
-  // Initialize Select2 on the multi-select element
-  $('#multiSelect').select2({
-    placeholder: "Select options",
-    width: '100%',  // Make sure it uses the full width of the container
-    allowClear: true,
-    dropdownAutoWidth: true,
-    closeOnSelect: false  // Keeps the dropdown open after selecting an item
+ // Initialize Select2 on the multi-select element
+$('#multiSelect').select2({
+  placeholder: "Select options",
+  width: '100%',  // Make sure it uses the full width of the container
+  allowClear: true,
+  dropdownAutoWidth: true,
+  closeOnSelect: false  // Keeps the dropdown open after selecting an item
+});
+
+// Track the container for badges
+const badgesContainer = document.getElementById('badges');
+
+// Function to add a badge with the label of the selected option
+function addBadge(value, label) {
+  const badge = document.createElement('span');
+  badge.className = 'badge bg-primary';
+  badge.id = `badge-${value}`;
+  badge.innerHTML = `${label} <span class="remove-badge">&times;</span>`;
+
+  // Event listener to remove the badge and deselect the item
+  badge.querySelector('.remove-badge').addEventListener('click', function() {
+    // Remove badge
+    badge.remove();
+    // Unselect the item in Select2
+    const select = $('#multiSelect');
+    const selectedOptions = select.val().filter(item => item !== value);
+    select.val(selectedOptions).trigger('change');
   });
 
-  // Track the container for badges
-  const badgesContainer = document.getElementById('badges');
+  badgesContainer.appendChild(badge);
+}
 
-  // Function to add a badge
-  function addBadge(value) {
-    const badge = document.createElement('span');
-    badge.className = 'badge bg-primary';
-    badge.id = `badge-${value}`;
-    badge.innerHTML = `${value} <span class="remove-badge">&times;</span>`;
+// Handle change event on the select box
+$('#multiSelect').on('change', function() {
+  badgesContainer.innerHTML = ''; // Clear all existing badges
+  const selectedOptions = $(this).val(); // Get selected options
 
-    // Event listener to remove the badge and deselect the item
-    badge.querySelector('.remove-badge').addEventListener('click', function() {
-      // Remove badge
-      badge.remove();
-      // Unselect the item in Select2
-      const select = $('#multiSelect');
-      const selectedOptions = select.val().filter(item => item !== value);
-      select.val(selectedOptions).trigger('change');
+  if (selectedOptions) {
+    selectedOptions.forEach(value => {
+      const label = $(`#multiSelect option[value="${value}"]`).text(); // Get the text of the selected option
+      addBadge(value, label); // Add badge with the label of the selected option
     });
-
-    badgesContainer.appendChild(badge);
   }
+});
 
-  // Handle change event on the select box
-  $('#multiSelect').on('change', function() {
-    badgesContainer.innerHTML = ''; // Clear all existing badges
-    const selectedOptions = $(this).val(); // Get selected options
+// Close Select2 dropdown on outside click
+$(document).on('click', function(e) {
+  if (!$(e.target).closest('.select2-container').length) {
+    $('#multiSelect').select2('close');  // Close the dropdown when clicking outside
+  }
+});
 
-    if (selectedOptions) {
-      selectedOptions.forEach(option => {
-        addBadge(option); // Add badges for each selected option
-      });
-    }
-  });
-
-  // Close Select2 dropdown on outside click
-  $(document).on('click', function(e) {
-    if (!$(e.target).closest('.select2-container').length) {
-      $('#multiSelect').select2('close');  // Close the dropdown when clicking outside
-    }
-  });
 </script>
 
 <!-- Bootstrap JS -->
